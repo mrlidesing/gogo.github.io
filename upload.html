@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <title>圖片上傳後台</title>
+</head>
+<body>
+  <h2>上傳活動照片</h2>
+  <form action="upload.php" method="POST" enctype="multipart/form-data">
+    <input type="file" name="upload[]" multiple accept="image/*">
+    <br><br>
+    <button type="submit">開始上傳</button>
+  </form>
+</body>
+</html>

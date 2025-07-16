@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <title>活動花絮</title>
+  <style>
+    .gallery-item { display: inline-block; margin: 5px; width: 220px; height: 160px; overflow: hidden; }
+    .gallery-item img { width: 100%; height: auto; }
+  </style>
+</head>
+<body>
+  <h1>活動花絮</h1>
+  <div id="gallery-container"></div>
+
+  <div style="margin-top: 20px;">
+    <button onclick="prevPage()">上一頁</button>
+    <span id="page-indicator"></span>
+    <button onclick="nextPage()">下一頁</button>
+  </div>
+
+  <script>
+    let totalImages = 0;
+    const imagesPerPage = 28;
+    let currentPage = 1;
+
+    async function fetchImageCount() {
+      const res = await fetch('images2/image-count.json');
+      const data = await res.json();
+      totalImages = data.total;
+      renderGallery();
+    }
+
+    function renderGallery() {
+      const container = document.getElementById("gallery-container");
+      container.innerHTML = "";
+
+      const start = (currentPage - 1) * imagesPerPage + 1;
+      const end = Math.min(currentPage * imagesPerPage, totalImages);
+
+      for (let i = start; i <= end; i++) {
+        const num = String(i).padStart(2, '0');
+        const item = document.createElement('div');
+        item.className = 'gallery-item';
+        item.innerHTML = `<img src="images2/em-${num}.jpg" alt="em-${num}">`;
+        container.appendChild(item);
+      }
+
+      document.getElementById("page-indicator").textContent = `第 ${currentPage} 頁`;
+    }
+
+    function nextPage() {
+      if (currentPage * imagesPerPage < totalImages) {
+        currentPage++;
+        renderGallery();
+      }
+    }
+
+    function prevPage() {
+      if (currentPage > 1) {
+        currentPage--;
+        renderGallery();
+      }
+    }
+
+    fetchImageCount();
+  </script>
+</body>
+</html>
